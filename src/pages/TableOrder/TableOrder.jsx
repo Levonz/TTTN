@@ -10,29 +10,6 @@ import { useTables } from '../../context/TableContext';
 import tomYumImg from './img/tomyum.jpg'; // 1. Import ảnh
 
 // Dữ liệu mẫu cho các món ăn
-const menuItems = [
-  // Buffet
-  {
-    id: 1,
-    name: 'Tom yum',
-    type: 'food',
-    category: 'beef',
-    img: tomYumImg, // 2. Sử dụng ảnh đã import
-    price: 90000,
-  },
-  { id: 2, name: 'Bắp bò', type: 'food', category: 'beef' },
-  { id: 3, name: 'Ba chỉ heo', type: 'food', category: 'pork' },
-  { id: 4, name: 'Nạc vai heo', type: 'food', category: 'pork' },
-  { id: 5, name: 'Đùi gà fillet', type: 'food', category: 'chicken' },
-  { id: 6, name: 'Kem Vani', type: 'food', category: 'dessert' },
-
-  // Trả tiền
-  { id: 8, name: 'Lõi vai bò Wagyu', type: 'drink', category: 'beef' },
-  { id: 9, name: 'Thăn ngoại bò Úc', type: 'drink', category: 'beef' },
-  { id: 10, name: 'Sườn heo nướng', type: 'drink', category: 'pork' },
-  { id: 11, name: 'Cánh gà chiên mắm', type: 'drink', category: 'chicken' },
-  { id: 12, name: 'Panna Cotta', type: 'drink', category: 'dessert' },
-];
 
 // Danh sách các danh mục để dễ dàng render
 const categories = [
@@ -47,6 +24,14 @@ const TableOrder = () => {
   const { tables, getTableById, addItemToCart } = useTables(); // Lấy thêm hàm addItemToCart và danh sách bàn
   const [activeMenuType, setActiveMenuType] = useState('food');
   const [activeCategory, setActiveCategory] = useState('beef');
+  const [menus, setMenus] = useState([]);
+
+  useEffect(() => {
+    fetch('http://localhost:8000/api/menus')
+      .then((res) => res.json())
+      .then((data) => setMenus(data))
+      .catch((err) => console.error('Lỗi lấy menu:', err));
+  }, []);
 
   // Lọc ra các bàn đã được đặt
   const reservedTables = tables.filter((table) => table.status === 'reserved');
@@ -133,7 +118,7 @@ const TableOrder = () => {
         <div className="table-order-section">
           <div className="table-order-section-content">
             {/* Lọc và hiển thị các món ăn dựa trên tab đã chọn */}
-            {menuItems
+            {menus
               .filter(
                 (item) =>
                   item.type === activeMenuType &&
@@ -142,17 +127,17 @@ const TableOrder = () => {
               .map((item) => (
                 <div key={item.id} className="table-order-section-item">
                   <div className="item-img">
-                    {/* 3. Hiển thị ảnh hoặc placeholder và cải thiện alt text */}
-                    {item.img ? (
-                      <img src={item.img} alt={item.name} />
+                    {item.image ? (
+                      <img src={item.image} alt={item.name} />
                     ) : (
                       <div className="img-placeholder">No Image</div>
                     )}
                   </div>
                   <p className="item-name">{item.name}</p>
                   <div className="item-addition-container">
-                    <p className="item-price">{item.price} đ</p>
-                    {/* Thêm sự kiện onClick để gọi hàm addItemToCart */}
+                    <p className="item-price">
+                      {item.price?.toLocaleString()} đ
+                    </p>
                     <div
                       className="item-add-btn"
                       onClick={() => addItemToCart(tableId, item)}

@@ -1,24 +1,16 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTables } from '../../context/TableContext';
-import { useEffect } from 'react';
+import { useState } from 'react';
 import './TableReservation.css';
 
 const TableReservation = () => {
   const { tableId } = useParams();
   const navigate = useNavigate();
-  const { getTableById, updateTableStatus } = useTables();
+  const { getTableById } = useTables();
 
   const table = getTableById(tableId);
+  const [error, setError] = useState('');
 
-  // 🔐 Thêm kiểm tra: Nếu bàn đã được đặt, chuyển hướng đến trang order
-  useEffect(() => {
-    // Nếu tìm thấy bàn và bàn không trống
-    if (table && table.status !== 'empty') {
-      navigate(`/table-order/${table.id}`, { replace: true });
-    }
-  }, [table, navigate, tableId]);
-
-  // Nếu không tìm thấy bàn, hiển thị thông báo
   if (!table) {
     return (
       <div className="reservation-page">
@@ -30,11 +22,28 @@ const TableReservation = () => {
     );
   }
 
-  const handleReserveTable = () => {
-    // 1. Cập nhật trạng thái bàn thành "reserved" thông qua context
-    updateTableStatus(table.id, 'reserved');
-    // 2. Chuyển hướng đến trang order chính thức
-    navigate(`/table-order/${table.id}`);
+  const handleReserveTable = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:8000/api/tables/${table.id}/reserve`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({}), // Gửi rỗng
+        }
+      );
+
+      if (!response.ok) {
+        const res = await response.json();
+        throw new Error(res.detail || 'Đặt bàn thất bại');
+      }
+
+      navigate(`/table-order/${table.id}`);
+    } catch (err) {
+      setError(err.message);
+    }
   };
 
   return (
@@ -43,6 +52,9 @@ const TableReservation = () => {
         <h1>Xác nhận đặt bàn</h1>
         <h2>{table.label}</h2>
         <p>Bàn này hiện đang trống. Bạn có muốn đặt bàn không?</p>
+
+        {error && <p className="error-text">{error}</p>}
+
         <button onClick={handleReserveTable} className="reserve-button">
           Đặt bàn
         </button>
