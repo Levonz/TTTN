@@ -1,35 +1,37 @@
 import './TableOrder.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleUser,
-  faCartShopping,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTables } from '../../context/TableContext';
 
-
 // Danh sách các danh mục đúng với dữ liệu thực tế bạn đã seed
 const categories = [
-  { key: 'main', label: 'Món chính' },
-  { key: 'drink', label: 'Đồ uống' },
-  { key: 'dessert', label: 'Tráng miệng' },
+  { key: 'Món chính', label: 'Món chính' },
+  { key: 'Đồ uống', label: 'Đồ uống' },
+  { key: 'Tráng miệng', label: 'Tráng miệng' },
+  { key: 'Món khai vị', label: 'Món khai vị' },
 ];
 
 const TableOrder = () => {
   const { tableId } = useParams();
   const { tables, getTableById, addItemToCart } = useTables();
   // Không cần activeMenuType nữa
-  const [activeCategory, setActiveCategory] = useState('main');
+  const [activeCategory, setActiveCategory] = useState('Món chính');
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
   const { refreshTables } = useTables();
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/menus')
-      .then((res) => res.json())
-      .then((data) => setMenus(data))
-      .catch((err) => console.error('Lỗi lấy menu:', err));
+    const fetchMenus = () => {
+      fetch('http://localhost:8000/api/menus')
+        .then((res) => res.json())
+        .then((data) => setMenus(data))
+        .catch((err) => console.error('Lỗi lấy menu:', err));
+    };
+    fetchMenus();
+    const interval = setInterval(fetchMenus, 30000);
+    return () => clearInterval(interval);
   }, []);
 
   const reservedTables = tables.filter((table) => table.status === 'reserved');
@@ -94,9 +96,6 @@ const TableOrder = () => {
           <Link to={`/cart/${tableId}`} className="cart">
             <FontAwesomeIcon icon={faCartShopping} />
           </Link>
-          <div className="user-info">
-            <FontAwesomeIcon icon={faCircleUser} />
-          </div>
         </div>
 
         <div className="table-order-header-third-line">

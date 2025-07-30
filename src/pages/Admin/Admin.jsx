@@ -15,11 +15,33 @@ const Admin = () => {
 
   const username = localStorage.getItem('username') || 'Admin';
 
+  const handleLogout = () => {
+    localStorage.removeItem('token'); // nếu có
+    localStorage.removeItem('role');
+    localStorage.removeItem('username');
+    // Có thể remove thêm các thông tin khác nếu có lưu
+    navigate('/'); // hoặc '/' tuỳ theo flow
+  };
+
   return (
     <div className="admin-page">
       <div className="admin-header">
         <h1>Xin chào, {username}</h1>
-        <p>Chào mừng đến trang quản trị hệ thống</p>
+        <button
+          className="logout-btn"
+          onClick={handleLogout}
+          style={{
+            background: 'var(--primary-color, #e61f26)',
+            color: '#fff',
+            border: 'none',
+            padding: '7px 16px',
+            borderRadius: '7px',
+            fontWeight: '600',
+            cursor: 'pointer',
+          }}
+        >
+          Đăng xuất
+        </button>
       </div>
 
       <div className="admin-section">

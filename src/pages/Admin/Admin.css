@@ -3,10 +3,14 @@
   background: var(--background-color);
   min-height: 100vh;
   font-family: var(--font-family);
+  ;
 }
 
 .admin-header {
   margin-bottom: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;;
 }
 
 .admin-header h1 {

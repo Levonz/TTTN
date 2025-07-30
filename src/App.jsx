@@ -6,6 +6,7 @@ import Admin from './pages/Admin/Admin';
 import TableOrder from './pages/TableOrder/TableOrder';
 import TableReservation from './pages/TableReservation/TableReservation';
 import Cart from './pages/Cart/Cart';
+import MenuManager from './pages/Admin/MenuManager/MenuManager';
 import { TableProvider } from './context/TableContext';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/cart/:tableId" element={<Cart />} />
 
           <Route path="/admin" element={<Admin />} />
+          <Route path="/admin/menus" element={<MenuManager />} />
         </Routes>
       </BrowserRouter>
     </TableProvider>
