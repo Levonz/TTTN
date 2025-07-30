@@ -6,7 +6,9 @@ import './TableReservation.css';
 const TableReservation = () => {
   const { tableId } = useParams();
   const navigate = useNavigate();
-  const { getTableById } = useTables();
+
+  // Lấy thêm hàm refreshTables từ context
+  const { getTableById, refreshTables } = useTables();
 
   const table = getTableById(tableId);
   const [error, setError] = useState('');
@@ -40,6 +42,10 @@ const TableReservation = () => {
         throw new Error(res.detail || 'Đặt bàn thất bại');
       }
 
+      // ✅ Gọi lại API để cập nhật danh sách bàn trong context
+      await refreshTables();
+
+      // ✅ Điều hướng sang TableOrder
       navigate(`/table-order/${table.id}`);
     } catch (err) {
       setError(err.message);

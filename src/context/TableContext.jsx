@@ -10,6 +10,14 @@ export const useTables = () => {
 export const TableProvider = ({ children }) => {
   const [tables, setTables] = useState([]);
   const [carts, setCarts] = useState({});
+  const refreshTables = async () => {
+    try {
+      const res = await axios.get('http://localhost:8000/api/tables');
+      setTables(res.data);
+    } catch (err) {
+      console.error('Không thể làm mới danh sách bàn:', err);
+    }
+  };
 
   // ✅ Lấy danh sách bàn từ server
   useEffect(() => {
@@ -92,6 +100,7 @@ export const TableProvider = ({ children }) => {
     addItemToCart,
     getCartByTableId,
     checkoutAndClearCart,
+    refreshTables,
   };
 
   return (
