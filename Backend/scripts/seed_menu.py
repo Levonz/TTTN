@@ -11,44 +11,51 @@ async def seed_menus():
     menus = [
         {
             "name": "Cơm gà",
+            "type": "chicken",
             "price": 45000,
             "category": "main",
             "image": "https://ibb.co/qL4ywRPD"
         },
         {
             "name": "Bò lúc lắc",
+            "type": "beef",
             "price": 60000,
             "category": "main",
             "image": "https://ibb.co/gF7TWjDZ"
         },
         {
             "name": "Gà chiên mắm",
+            "type": "chicken",
             "price": 50000,
             "category": "main",
             "image": "https://ibb.co/Z18796d3"
         },
         {
             "name": "Coca Cola",
+            "type": "drink",
             "price": 15000,
             "category": "drink",
             "image": "https://ibb.co/qYgjRh6S"
         },
         {
             "name": "Trà đào",
+            "type": "drink",
             "price": 20000,
             "category": "drink",
             "image": "https://ibb.co/5gG5jxsR"
         },
         {
             "name": "Bánh flan",
+            "type": "dessert",
             "price": 10000,
-            "category": "dessert",
+            "category": "drink",
             "image": "https://ibb.co/1YskNVPG"
         },
         {
             "name": "Chè khúc bạch",
+            "type": "dessert",
             "price": 25000,
-            "category": "dessert",
+            "category": "drink",
             "image": "https://ibb.co/1GGtnkdv"
         },
     ]

@@ -10,3 +10,6 @@ client = AsyncIOMotorClient(MONGO_URI)
 
 db = client["restaurant"]
 table_collection = db["tables"]
+
+menu_collection = db["menus"]
+reservation_collection = db["reservations"]

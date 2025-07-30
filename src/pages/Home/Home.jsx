@@ -77,14 +77,7 @@ const Home = () => {
           </a>
         </div>
 
-        <div className="home-header-third-line">
-          <a href="#" className="table-section table-section--active">
-            Bàn 4 người
-          </a>
-          <a href="#6pTable" className="table-section">
-            Bàn 6 người
-          </a>
-        </div>
+        
       </div>
 
       <div className="home-page-content">

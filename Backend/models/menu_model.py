@@ -1,9 +1,9 @@
 from pydantic import BaseModel
+from typing import Optional
 
-
-class MenuItem(BaseModel):
-    id: str
+class Menu(BaseModel):
     name: str
+    type: str  # 'food' hoặc 'drink'
+    category: str  # 'beef', 'pork', ...
     price: float
-    category: str
-    image: str
+    image: Optional[str] = None  # URL ảnh (nếu có)

@@ -1,27 +1,22 @@
 from fastapi import APIRouter, HTTPException
-from models.table_model import Table
-from models.reserve_model import ReservationRequest
 from database.mongo import table_collection
 from bson import ObjectId
 
 router = APIRouter()
 
 
-def convert_table(table) -> dict:
-    return {
-        "id": str(table["_id"]),
-        "label": table["label"],
-        "capacity": table["capacity"],
-        "status": table["status"],
-    }
-
-
-@router.get("/tables", response_model=list[Table])
+@router.get("/tables")
 async def get_tables():
-    tables_cursor = table_collection.find()
     tables = []
-    async for table in tables_cursor:
-        tables.append(convert_table(table))
+    async for table in table_collection.find():
+        tables.append(
+            {
+                "id": str(table.get("_id", "")),
+                "label": table.get("label", ""),
+                "capacity": table.get("capacity", 0),
+                "status": table.get("status", ""),
+            }
+        )
     return tables
 
 
