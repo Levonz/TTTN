@@ -9,6 +9,15 @@ const Home = () => {
   const [sectionActiveStatus, setSectionActiveStatus] = useState('empty');
   const navigate = useNavigate();
   const { tables } = useTables(); // Lấy danh sách bàn từ context
+  const [showUserInfo, setShowUserInfo] = useState(false);
+
+  const username = localStorage.getItem('username');
+  const role = localStorage.getItem('role');
+
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/');
+  };
 
   // 🔐 Kiểm tra role trước khi render
   useEffect(() => {
@@ -47,8 +56,22 @@ const Home = () => {
               </Link>
             ))}
           </div>
-          <div className="user-info">
-            <FontAwesomeIcon icon={faCircleUser} />
+          <div className="user-info-wrapper">
+            <div
+              className="user-info"
+              onClick={() => setShowUserInfo(!showUserInfo)}
+            >
+              <FontAwesomeIcon icon={faCircleUser} />
+            </div>
+            {showUserInfo && (
+              <div className="user-popup">
+                <p>
+                  <strong>{username}</strong>
+                </p>
+                <p>Role: {role}</p>
+                <button onClick={handleLogout}>Đăng xuất</button>
+              </div>
+            )}
           </div>
         </div>
 
@@ -76,8 +99,6 @@ const Home = () => {
             Bàn đã đặt
           </a>
         </div>
-
-        
       </div>
 
       <div className="home-page-content">

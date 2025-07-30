@@ -1,9 +1,13 @@
 import './TableOrder.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCircleUser, faCartShopping } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCircleUser,
+  faCartShopping,
+} from '@fortawesome/free-solid-svg-icons';
 import { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTables } from '../../context/TableContext';
+
 
 // Danh sách các danh mục đúng với dữ liệu thực tế bạn đã seed
 const categories = [
@@ -18,6 +22,8 @@ const TableOrder = () => {
   // Không cần activeMenuType nữa
   const [activeCategory, setActiveCategory] = useState('main');
   const [menus, setMenus] = useState([]);
+  const navigate = useNavigate();
+  const { refreshTables } = useTables();
 
   useEffect(() => {
     fetch('http://localhost:8000/api/menus')
@@ -29,6 +35,28 @@ const TableOrder = () => {
   const reservedTables = tables.filter((table) => table.status === 'reserved');
   const table = getTableById(tableId);
 
+  const handleCancelTable = async () => {
+    const confirmCancel = window.confirm('Bạn có chắc muốn hủy bàn này?');
+    if (!confirmCancel) return;
+
+    try {
+      const res = await fetch(
+        `http://localhost:8000/api/tables/${tableId}/cancel`,
+        {
+          method: 'POST',
+        }
+      );
+
+      if (!res.ok) throw new Error('Hủy bàn thất bại!');
+
+      alert('Bàn đã được hủy!');
+      await refreshTables();
+      navigate('/home');
+    } catch (err) {
+      alert(err.message);
+    }
+  };
+
   if (!table) {
     return (
       <div>
@@ -39,7 +67,9 @@ const TableOrder = () => {
   }
 
   // Lọc menu chỉ theo category thôi!
-  const filteredMenus = menus.filter((item) => item.category === activeCategory);
+  const filteredMenus = menus.filter(
+    (item) => item.category === activeCategory
+  );
 
   return (
     <div className="table-order-page">
@@ -75,7 +105,9 @@ const TableOrder = () => {
               key={category.key}
               href="#"
               className={`menu-category-section ${
-                activeCategory === category.key ? 'menu-category-section--active' : ''
+                activeCategory === category.key
+                  ? 'menu-category-section--active'
+                  : ''
               }`}
               onClick={() => setActiveCategory(category.key)}
             >
@@ -99,9 +131,7 @@ const TableOrder = () => {
                 </div>
                 <p className="item-name">{item.name}</p>
                 <div className="item-addition-container">
-                  <p className="item-price">
-                    {item.price?.toLocaleString()} đ
-                  </p>
+                  <p className="item-price">{item.price?.toLocaleString()} đ</p>
                   <div
                     className="item-add-btn"
                     onClick={() => addItemToCart(tableId, item)}
@@ -114,6 +144,9 @@ const TableOrder = () => {
           </div>
         </div>
       </div>
+      <button onClick={handleCancelTable} className="cancel-table-btn">
+        Hủy bàn
+      </button>
     </div>
   );
 };

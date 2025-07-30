@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
+import './Admin.css';
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -12,10 +13,36 @@ const Admin = () => {
     }
   }, [navigate]);
 
+  const username = localStorage.getItem('username') || 'Admin';
+
   return (
-    <div style={{ padding: 20 }}>
-      <h1>Trang quản trị</h1>
-      <p>Chào mừng admin!</p>
+    <div className="admin-page">
+      <div className="admin-header">
+        <h1>Xin chào, {username}</h1>
+        <p>Chào mừng đến trang quản trị hệ thống</p>
+      </div>
+
+      <div className="admin-section">
+        <Link to="/admin/tables" className="admin-card">
+          <h3>Quản lý bàn ăn</h3>
+          <p>Thêm, sửa, xóa bàn và trạng thái đặt</p>
+        </Link>
+
+        <Link to="/admin/menus" className="admin-card">
+          <h3>Quản lý món ăn</h3>
+          <p>Cập nhật danh sách món, giá, loại</p>
+        </Link>
+
+        <Link to="/admin/invoices" className="admin-card">
+          <h3>Quản lý hóa đơn</h3>
+          <p>Xem lịch sử hóa đơn theo ngày, bàn</p>
+        </Link>
+
+        <Link to="/admin/employees" className="admin-card">
+          <h3>Quản lý nhân viên</h3>
+          <p>Thêm tài khoản, gán quyền, reset mật khẩu</p>
+        </Link>
+      </div>
     </div>
   );
 };

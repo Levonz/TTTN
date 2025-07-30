@@ -1,0 +1,48 @@
+.admin-page {
+  padding: 40px;
+  background: var(--background-color);
+  min-height: 100vh;
+  font-family: var(--font-family);
+}
+
+.admin-header {
+  margin-bottom: 30px;
+}
+
+.admin-header h1 {
+  color: var(--primary-color);
+  font-size: 2rem;
+  margin-bottom: 8px;
+}
+
+.admin-header p {
+  color: var(--text-color);
+  font-size: 1rem;
+}
+
+.admin-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+
+.admin-card {
+  flex: 1 1 220px;
+  background: var(--white-color);
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  text-decoration: none;
+  color: var(--text-color);
+}
+
+.admin-card:hover {
+  box-shadow: 0 6px 18px rgba(230, 31, 38, 0.2);
+  transform: scale(1.02);
+}
+
+.admin-card h3 {
+  margin-bottom: 10px;
+  color: var(--primary-color);
+}
