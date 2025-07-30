@@ -1,5 +1,6 @@
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useTables } from '../../context/TableContext';
+import { useEffect } from 'react';
 import './TableReservation.css';
 
 const TableReservation = () => {
@@ -8,6 +9,14 @@ const TableReservation = () => {
   const { getTableById, updateTableStatus } = useTables();
 
   const table = getTableById(tableId);
+
+  // 🔐 Thêm kiểm tra: Nếu bàn đã được đặt, chuyển hướng đến trang order
+  useEffect(() => {
+    // Nếu tìm thấy bàn và bàn không trống
+    if (table && table.status !== 'empty') {
+      navigate(`/table-order/${table.id}`, { replace: true });
+    }
+  }, [table, navigate, tableId]);
 
   // Nếu không tìm thấy bàn, hiển thị thông báo
   if (!table) {
