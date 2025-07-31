@@ -30,6 +30,7 @@ const Cart = () => {
   const [activeTab, setActiveTab] = useState('cart');
   const [orders, setOrders] = useState([]);
 
+  // Lấy danh sách món đã gửi bếp (order)
   useEffect(() => {
     fetchOrders();
   }, [tableId]);
@@ -40,10 +41,11 @@ const Cart = () => {
       const data = await res.json();
       setOrders(data.filter((order) => !order.paid));
     } catch (err) {
-      console.error('Lỗi khi lấy danh sách món đã gọi:', err);
+      // lỗi lấy order
     }
   };
 
+  // Gửi món đi
   const handleSendToKitchen = async () => {
     if (cartItems.length === 0) {
       alert('Chưa có món nào trong giỏ hàng. Hãy chọn món để gọi!');
@@ -64,13 +66,12 @@ const Cart = () => {
     }
   };
 
+  // Thanh toán toàn bộ order chưa thanh toán của bàn
   const handlePayAll = async () => {
     try {
       const response = await fetch(
         `http://localhost:8000/api/invoices/${tableId}`,
-        {
-          method: 'POST',
-        }
+        { method: 'POST' }
       );
       if (!response.ok) throw new Error('Thanh toán thất bại!');
       const data = await response.json();
@@ -82,11 +83,13 @@ const Cart = () => {
     }
   };
 
+  // Định dạng giờ hiển thị lượt order
   const formatTime = (isoStr) => {
     const d = new Date(isoStr);
     return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  // Tổng tiền các món đã order
   const totalOrdered = orders.reduce((sum, order) => {
     return (
       sum +

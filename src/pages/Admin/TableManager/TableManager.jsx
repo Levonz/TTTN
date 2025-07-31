@@ -4,24 +4,22 @@ import './TableManager.css';
 import { useNavigate } from 'react-router-dom';
 
 const API_URL = 'http://localhost:8000/api/tables';
-const initialForm = { label: '', capacity: 4, status: 'empty' };
 
 const TableManager = () => {
-  const [tables, setTables] = useState([]);
+  const [tableList, setTableList] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState(initialForm);
+  const [form, setForm] = useState({ label: '', capacity: 4, status: 'empty' });
   const [editingId, setEditingId] = useState(null);
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
   const fetchTables = async () => {
     setLoading(true);
     try {
       const res = await axios.get(API_URL);
-      setTables(res.data);
-    } catch (err) {
-      alert('Không lấy được danh sách bàn');
-    }
+      setTableList(res.data);
+    } catch (err) {}
     setLoading(false);
   };
 
@@ -30,79 +28,83 @@ const TableManager = () => {
   }, []);
 
   const openAddModal = () => {
-    setForm(initialForm);
+    setForm({ label: '', capacity: 4, status: 'empty' });
     setEditingId(null);
     setShowModal(true);
+    setError('');
   };
 
-  const openEditModal = (table) => {
+  // Chỉnh thông tin bàn
+  const openEditModal = (t) => {
     setForm({
-      label: table.label,
-      capacity: table.capacity,
-      status: table.status,
+      label: t.label,
+      capacity: t.capacity,
+      status: t.status,
     });
-    setEditingId(table.id);
+    setEditingId(t.id);
     setShowModal(true);
+    setError('');
   };
 
   const closeModal = () => {
     setShowModal(false);
     setEditingId(null);
-    setForm(initialForm);
+    setForm({ label: '', capacity: 4, status: 'empty' });
+    setError('');
   };
 
+  // Khi nhập trên form
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setForm({
-      ...form,
-      [name]: name === 'capacity' ? Number(value) : value,
-    });
+    setForm({ ...form, [name]: name === 'capacity' ? Number(value) : value });
   };
 
+  // Thêm/sửa bàn
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const submitData = {
-      ...form,
-      capacity: parseInt(form.capacity, 10), // Ép về số nguyên
-    };
+    if (!form.label.trim()) {
+      setError('Chưa nhập tên bàn');
+      return;
+    }
     try {
       if (editingId) {
-        await axios.put(`${API_URL}/${editingId}`, submitData);
+        await axios.put(`${API_URL}/${editingId}`, form);
       } else {
-        await axios.post(API_URL, submitData);
+        await axios.post(API_URL, form);
       }
       fetchTables();
       closeModal();
     } catch (err) {
-      alert('Thao tác thất bại!');
+      setError('Có lỗi xảy ra, thử lại sau');
     }
   };
 
   const handleDelete = async (id) => {
-    if (window.confirm('Bạn có chắc muốn xóa bàn này không?')) {
+    if (window.confirm('Xóa bàn này luôn?')) {
       try {
         await axios.delete(`${API_URL}/${id}`);
         fetchTables();
-      } catch (err) {
-        alert('Xóa không thành công');
-      }
+      } catch (err) {}
     }
   };
 
   return (
     <div className="table-manager-container">
+      <button
+        className="table-manager-back-btn"
+        onClick={() => navigate('/admin')}
+      >
+        ← Quay lại
+      </button>
       <div className="table-manager-header">
-        <h1>Quản lý Bàn ăn</h1>
-        <button
-          className="table-manager-back-btn"
-          onClick={() => navigate('/admin')}
-        >
-          ← Quay lại
+        <div>
+          <h1>Quản lý bàn ăn</h1>
+          <p>Thêm, sửa, xóa bàn, đổi trạng thái</p>
+        </div>
+        <button className="table-manager-add-btn" onClick={openAddModal}>
+          + Thêm bàn
         </button>
       </div>
-      <button className="table-manager-add-btn" onClick={openAddModal}>
-        + Thêm bàn ăn
-      </button>
       {loading ? (
         <p>Đang tải dữ liệu...</p>
       ) : (
@@ -116,16 +118,14 @@ const TableManager = () => {
             </tr>
           </thead>
           <tbody>
-            {tables.map((table) => (
-              <tr key={table.id}>
-                <td>{table.label}</td>
-                <td>{table.capacity}</td>
-                <td>{table.status === 'reserved' ? 'Đã đặt' : 'Trống'}</td>
-                <td>
-                  <div className="table-manager-actions">
-                    <button onClick={() => openEditModal(table)}>Sửa</button>
-                    <button onClick={() => handleDelete(table.id)}>Xóa</button>
-                  </div>
+            {tableList.map((t) => (
+              <tr key={t.id}>
+                <td>{t.label}</td>
+                <td>{t.capacity}</td>
+                <td>{t.status === 'empty' ? 'Trống' : 'Đã đặt'}</td>
+                <td className="table-manager-actions">
+                  <button onClick={() => openEditModal(t)}>Sửa</button>
+                  <button onClick={() => handleDelete(t.id)}>Xóa</button>
                 </td>
               </tr>
             ))}
@@ -138,10 +138,10 @@ const TableManager = () => {
             className="table-manager-modal"
             onClick={(e) => e.stopPropagation()}
           >
-            <button className="close-modal" onClick={closeModal} title="Đóng">
+            <button className="close-modal" onClick={closeModal}>
               &times;
             </button>
-            <h2>{editingId ? 'Cập nhật bàn ăn' : 'Thêm bàn ăn mới'}</h2>
+            <h2>{editingId ? 'Cập nhật bàn' : 'Thêm bàn mới'}</h2>
             <form onSubmit={handleSubmit}>
               <input
                 name="label"
@@ -149,26 +149,23 @@ const TableManager = () => {
                 onChange={handleChange}
                 placeholder="Tên bàn"
                 required
+                autoFocus
               />
               <select
                 name="capacity"
                 value={form.capacity}
                 onChange={handleChange}
-                required
               >
-                <option value="">Chọn số người</option>
                 <option value={4}>Bàn 4 người</option>
                 <option value={6}>Bàn 6 người</option>
               </select>
-              <select
-                name="status"
-                value={form.status}
-                onChange={handleChange}
-                required
-              >
+              <select name="status" value={form.status} onChange={handleChange}>
                 <option value="empty">Trống</option>
                 <option value="reserved">Đã đặt</option>
               </select>
+              {error && (
+                <div style={{ color: '#e61f26', marginTop: 6 }}>{error}</div>
+              )}
               <div className="modal-btn-row">
                 <button className="submit-btn" type="submit">
                   {editingId ? 'Cập nhật' : 'Thêm mới'}

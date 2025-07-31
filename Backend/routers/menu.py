@@ -23,7 +23,6 @@ async def get_menus():
 
 @router.post("/menus")
 async def create_menu(menu: dict = Body(...)):
-    # Chỉ giữ các trường cần thiết
     new_menu = {
         "name": menu.get("name", ""),
         "category": menu.get("category", ""),

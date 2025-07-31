@@ -29,23 +29,23 @@ async def get_staff():
 async def create_staff(data: dict = Body(...)):
     if await staff_collection.find_one({"username": data.get("username")}):
         raise HTTPException(status_code=400, detail="Username đã tồn tại")
-
     raw_password = data.get("password", "")
     if not raw_password:
         raise HTTPException(status_code=400, detail="Bạn phải nhập mật khẩu")
-
-    hashed_pw = bcrypt.hashpw(raw_password.encode('utf-8'), bcrypt.gensalt()).decode('utf-8')
-
+    hashed_pw = bcrypt.hashpw(raw_password.encode("utf-8"), bcrypt.gensalt()).decode(
+        "utf-8"
+    )
     new_staff = {
         "username": data.get("username", ""),
         "name": data.get("name", ""),
         "role": data.get("role", "staff"),
         "phone": data.get("phone", ""),
-        "password": hashed_pw,  
-        "created_at": datetime.utcnow()
+        "password": hashed_pw,
+        "created_at": datetime.utcnow(),
     }
     result = await staff_collection.insert_one(new_staff)
     return {"id": str(result.inserted_id)}
+
 
 @router.put("/staff/{staff_id}")
 async def update_staff(staff_id: str, data: dict = Body(...)):

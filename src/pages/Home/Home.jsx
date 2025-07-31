@@ -24,16 +24,15 @@ const Home = () => {
   };
 
   useEffect(() => {
-    const role = localStorage.getItem('role');
-    if (role !== 'employee' && role !== 'staff') {
+    // kiểm tra quyền, chỉ cho admin/staff vào
+    if (role !== 'admin' && role !== 'staff') {
       alert('Bạn không có quyền truy cập trang này.');
       navigate('/');
     }
-  }, [navigate]);
+  }, [navigate, role]);
 
   const reservedTables = tables.filter((table) => table.status === 'reserved');
 
-  // Sửa lại: khi click vào bàn trống thì mở modal, bàn đã đặt thì vào TableOrder
   const handleTableClick = (table) => {
     if (table.status === 'empty') {
       setSelectedTable(table);
@@ -44,7 +43,6 @@ const Home = () => {
     }
   };
 
-  // Đặt bàn bằng modal
   const handleReserveTable = async () => {
     if (!selectedTable) return;
     setIsReserving(true);
@@ -56,16 +54,13 @@ const Home = () => {
           headers: { 'Content-Type': 'application/json' },
         }
       );
-
       if (!response.ok) {
         const res = await response.json();
         throw new Error(res.detail || 'Đặt bàn thất bại');
       }
-
       setReservationError('');
       setShowReservationModal(false);
       setSelectedTable(null);
-
       if (typeof refreshTables === 'function') refreshTables();
     } catch (err) {
       setReservationError(err.message);
@@ -111,7 +106,6 @@ const Home = () => {
             )}
           </div>
         </div>
-
         <div className="home-header-second-line">
           <a
             href="#"
@@ -137,7 +131,6 @@ const Home = () => {
           </a>
         </div>
       </div>
-
       <div className="home-page-content">
         <div className="section" id="4pTable">
           <p className="section-header">Bàn 4 người</p>
@@ -162,7 +155,6 @@ const Home = () => {
               ))}
           </div>
         </div>
-
         <div className="section" id="6pTable">
           <p className="section-header">Bàn 6 người</p>
           <div className="section-content">
@@ -187,8 +179,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-
-      {/* Modal đặt bàn */}
       {showReservationModal && selectedTable && (
         <div
           className="reservation-modal-overlay"
@@ -198,9 +188,8 @@ const Home = () => {
             className="reservation-container"
             onClick={(e) => e.stopPropagation()}
           >
-            <h1>Xác nhận đặt bàn</h1>
-            <h2>{selectedTable.label}</h2>
-            <p>Bàn này hiện đang trống. Bạn có muốn đặt bàn không?</p>
+            <h1>Xác nhận đặt {selectedTable.label}</h1>
+            <br></br>
             {reservationError && (
               <p className="error-text">{reservationError}</p>
             )}

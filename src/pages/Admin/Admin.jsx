@@ -6,6 +6,7 @@ const Admin = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Chặn người không phải admin
     const role = localStorage.getItem('role');
     if (role !== 'admin') {
       alert('Bạn không có quyền truy cập trang này.');
@@ -16,11 +17,10 @@ const Admin = () => {
   const username = localStorage.getItem('username') || 'Admin';
 
   const handleLogout = () => {
-    localStorage.removeItem('token'); // nếu có
+    localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('username');
-    // Có thể remove thêm các thông tin khác nếu có lưu
-    navigate('/'); // hoặc '/' tuỳ theo flow
+    navigate('/');
   };
 
   return (
@@ -37,29 +37,25 @@ const Admin = () => {
             padding: '7px 16px',
             borderRadius: '7px',
             fontWeight: '600',
-            cursor: 'pointer',
+            cursor: 'pointer'
           }}
         >
           Đăng xuất
         </button>
       </div>
-
       <div className="admin-section">
         <Link to="/admin/tables" className="admin-card">
           <h3>Quản lý bàn ăn</h3>
           <p>Thêm, sửa, xóa bàn và trạng thái đặt</p>
         </Link>
-
         <Link to="/admin/menus" className="admin-card">
           <h3>Quản lý món ăn</h3>
           <p>Cập nhật danh sách món, giá, loại</p>
         </Link>
-
         <Link to="/admin/invoices" className="admin-card">
           <h3>Quản lý hóa đơn</h3>
           <p>Xem lịch sử hóa đơn theo ngày, bàn</p>
         </Link>
-
         <Link to="/admin/staff" className="admin-card">
           <h3>Quản lý nhân viên</h3>
           <p>Thêm tài khoản, gán quyền, reset mật khẩu</p>

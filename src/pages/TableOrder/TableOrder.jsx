@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useTables } from '../../context/TableContext';
 
-// Danh sách các danh mục đúng với dữ liệu thực tế bạn đã seed
 const categories = [
   { key: 'Món chính', label: 'Món chính' },
   { key: 'Đồ uống', label: 'Đồ uống' },
@@ -15,19 +14,18 @@ const categories = [
 
 const TableOrder = () => {
   const { tableId } = useParams();
-  const { tables, getTableById, addItemToCart } = useTables();
-  // Không cần activeMenuType nữa
+  const { tables, getTableById, addItemToCart, refreshTables } = useTables();
   const [activeCategory, setActiveCategory] = useState('Món chính');
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
-  const { refreshTables } = useTables();
 
   useEffect(() => {
+    // Lấy menu mỗi 30s tự refresh
     const fetchMenus = () => {
       fetch('http://localhost:8000/api/menus')
         .then((res) => res.json())
         .then((data) => setMenus(data))
-        .catch((err) => console.error('Lỗi lấy menu:', err));
+        .catch((err) => {});
     };
     fetchMenus();
     const interval = setInterval(fetchMenus, 30000);
@@ -38,19 +36,13 @@ const TableOrder = () => {
   const table = getTableById(tableId);
 
   const handleCancelTable = async () => {
-    const confirmCancel = window.confirm('Bạn có chắc muốn hủy bàn này?');
-    if (!confirmCancel) return;
-
+    if (!window.confirm('Bạn có chắc muốn hủy bàn này?')) return;
     try {
       const res = await fetch(
         `http://localhost:8000/api/tables/${tableId}/cancel`,
-        {
-          method: 'POST',
-        }
+        { method: 'POST' }
       );
-
       if (!res.ok) throw new Error('Hủy bàn thất bại!');
-
       alert('Bàn đã được hủy!');
       await refreshTables();
       navigate('/home');
@@ -68,7 +60,6 @@ const TableOrder = () => {
     );
   }
 
-  // Lọc menu chỉ theo category thôi!
   const filteredMenus = menus.filter(
     (item) => item.category === activeCategory
   );
@@ -95,12 +86,10 @@ const TableOrder = () => {
               ))}
             </div>
           </div>
-
           <Link to={`/cart/${tableId}`} className="cart">
             <FontAwesomeIcon icon={faCartShopping} />
           </Link>
         </div>
-
         <div className="table-order-header-third-line">
           {categories.map((category) => (
             <a

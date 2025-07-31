@@ -14,7 +14,7 @@ async def get_tables():
                 "id": str(table.get("_id", "")),
                 "label": table.get("label", ""),
                 "capacity": table.get("capacity", 0),
-                "status": table.get("status", ""),  # empty, reserved, serving...
+                "status": table.get("status", ""),
             }
         )
     return tables
@@ -24,7 +24,7 @@ async def get_tables():
 async def create_table(data: dict = Body(...)):
     new_table = {
         "label": data.get("label", ""),
-        "capacity": int(data.get("capacity", 0)),  # Ép về int
+        "capacity": int(data.get("capacity", 0)),
         "status": data.get("status", "empty"),
     }
     result = await table_collection.insert_one(new_table)
@@ -35,7 +35,7 @@ async def create_table(data: dict = Body(...)):
 async def update_table(table_id: str, data: dict = Body(...)):
     updated = {
         "label": data.get("label", ""),
-        "capacity": int(data.get("capacity", 0)),  # Ép về int
+        "capacity": int(data.get("capacity", 0)),
         "status": data.get("status", "empty"),
     }
     result = await table_collection.update_one(
@@ -54,7 +54,6 @@ async def delete_table(table_id: str):
     return {"msg": "Đã xóa thành công"}
 
 
-# Đặt/hủy bàn giữ nguyên như code của bạn
 @router.post("/tables/{table_id}/reserve")
 async def reserve_table(table_id: str):
     table = await table_collection.find_one({"_id": ObjectId(table_id)})

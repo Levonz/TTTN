@@ -41,6 +41,7 @@ const StaffManager = () => {
     setShowModal(true);
   };
 
+  // Khi sửa thì hiện modal và set giá trị form
   const openEditModal = (staff) => {
     setForm({
       username: staff.username,
@@ -59,11 +60,13 @@ const StaffManager = () => {
     setForm(initialForm);
   };
 
+  // Khi nhập trên form
   const handleChange = (e) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
 
+  // Thêm hoặc sửa nhân viên
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -135,7 +138,7 @@ const StaffManager = () => {
                     ? new Date(s.created_at).toLocaleDateString()
                     : ''}
                 </td>
-                <td>
+                <td className="staff-manager-actions">
                   <button onClick={() => openEditModal(s)}>Sửa</button>
                   <button onClick={() => handleDelete(s.id)}>Xóa</button>
                 </td>

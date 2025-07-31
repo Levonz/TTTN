@@ -20,7 +20,6 @@ const MenuManager = () => {
   const [editingId, setEditingId] = useState(null);
   const navigate = useNavigate();
 
-  // Lấy danh sách menu
   const fetchMenus = async () => {
     setLoading(true);
     try {
@@ -45,7 +44,6 @@ const MenuManager = () => {
   const openEditModal = (menu) => {
     setForm({
       name: menu.name,
-      type: menu.type,
       category: menu.category,
       price: menu.price,
       image: menu.image,
@@ -142,7 +140,6 @@ const MenuManager = () => {
         </table>
       )}
 
-      {/* Popup Modal Thêm/Sửa */}
       {showModal && (
         <div className="menu-manager-modal-overlay" onClick={closeModal}>
           <div
@@ -161,7 +158,6 @@ const MenuManager = () => {
                 placeholder="Tên món ăn"
                 required
               />
-
               <select
                 name="category"
                 value={form.category}
@@ -174,7 +170,6 @@ const MenuManager = () => {
                 <option value="Tráng miệng">Tráng miệng</option>
                 <option value="Món khai vị">Món khai vị</option>
               </select>
-
               <input
                 name="price"
                 value={form.price}

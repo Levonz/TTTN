@@ -8,9 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  // Xử lý đăng nhập
   const handleLogin = async (e) => {
     e.preventDefault();
-
     try {
       const response = await axios.post('http://localhost:8000/api/login', {
         username,
