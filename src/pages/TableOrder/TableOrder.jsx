@@ -77,22 +77,25 @@ const TableOrder = () => {
     <div className="table-order-page">
       <div className="table-order-header">
         <div className="table-order-header-first-line">
-          <div className="table-order-header-navbar">
+          <div className="table-order-header-navbar-wrapper">
             <Link to="/home" className="table-order-header-navbar-home-btn">
               HOME
             </Link>
-            {reservedTables.map((reservedTable) => (
-              <Link
-                key={reservedTable.id}
-                to={`/table-order/${reservedTable.id}`}
-                className={`table-nav-btn ${
-                  reservedTable.id === tableId ? 'table-nav-btn--active' : ''
-                }`}
-              >
-                {reservedTable.label}
-              </Link>
-            ))}
+            <div className="table-order-header-navbar-scroll">
+              {reservedTables.map((reservedTable) => (
+                <Link
+                  key={reservedTable.id}
+                  to={`/table-order/${reservedTable.id}`}
+                  className={`table-nav-btn ${
+                    reservedTable.id === tableId ? 'table-nav-btn--active' : ''
+                  }`}
+                >
+                  {reservedTable.label}
+                </Link>
+              ))}
+            </div>
           </div>
+
           <Link to={`/cart/${tableId}`} className="cart">
             <FontAwesomeIcon icon={faCartShopping} />
           </Link>
@@ -114,6 +117,9 @@ const TableOrder = () => {
             </a>
           ))}
         </div>
+      </div>
+      <div className="table-order-current-table-label">
+        {table && <span>{table.label}</span>}
       </div>
       <div className="table-order-page-content">
         <div className="table-order-section">

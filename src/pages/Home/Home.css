@@ -23,11 +23,82 @@
   align-items: center;
 }
 
-.home-header-navbar {
-  flex: 1;
+.home-header-navbar-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-width: 0; 
+}
+
+.home-header-navbar-home-btn {
+  font-weight: bold;
+  color: var(--primary-color, #e61f26);
+  text-decoration: none;
+  padding: 8px 18px;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 1px 8px rgba(120, 30, 30, 0.04);
+  border: 1.5px solid #ececec;
+  margin-right: 9px;
+  flex-shrink: 0;
+  transition: background 0.18s, color 0.18s;
+}
+.home-header-navbar-home-btn:hover {
+  background: var(--secondary-color, #599fd4);
+  color: #fff;
+}
+
+.home-header-navbar-scroll {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 2px;
+  flex: 1;
+  min-width: 0;
+  max-width: 100%;
+}
+.home-header-navbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.table-nav-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #f5f5fa;
+  border-radius: 7px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1.5px solid #cfd6e8;
+  transition: background 0.18s, border 0.18s, color 0.16s;
+  white-space: nowrap;
+}
+
+.table-nav-btn:hover, .table-nav-btn.table-nav-btn--active {
+  background: var(--primary-color, #e61f26);
+  border-color: var(--primary-color, #e61f26);
+  color: #fff;
+}
+
+
+.home-header-navbar {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+  scrollbar-width: none;         
+  -ms-overflow-style: none;      
+  padding-bottom: 2px;
+}
+
+.home-header-navbar::-webkit-scrollbar {
+  display: none;
 }
 
 .home-header-navbar-home-btn {
@@ -179,3 +250,106 @@
   background: #fff6f7;
   transform: scale(1.04);
 }
+
+.table-action-text {
+  color: var(--primary-color, #e61f26);
+  font-size: 0.98rem;
+  margin-left: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+.reservation-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30,30,30,0.17);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+.reservation-container {
+  background: #fff;
+  padding: 32px 36px;
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+  min-width: 320px;
+  max-width: 96vw;
+  position: relative;
+  animation: showUp .15s;
+}
+@keyframes showUp {
+  0% { transform: scale(0.9); opacity: 0.7;}
+  100% { transform: scale(1); opacity: 1;}
+}
+.reserve-button {
+  background: var(--primary-color, #e61f26);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-weight: 600;
+  padding: 9px 22px;
+  margin-right: 12px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.reserve-button:hover:not([disabled]) { background: var(--secondary-color, #599fd4);}
+.cancel-button {
+  background: #eaeaea;
+  color: #222;
+  border: none;
+  border-radius: 7px;
+  font-weight: 500;
+  padding: 9px 22px;
+  cursor: pointer;
+}
+.cancel-button:hover:not([disabled]) { background: #d2d2d2;}
+.error-text { color: #e61f26; margin-top: 10px; font-weight: 500;}
+
+.reservation-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(30,30,30,0.17);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1002;
+}
+
+.reservation-container {
+  background: #fff;
+  padding: 32px 36px;
+  border-radius: 14px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.14);
+  min-width: 320px;
+  max-width: 96vw;
+  position: relative;
+  animation: showUp .15s;
+}
+@keyframes showUp {
+  0% { transform: scale(0.9); opacity: 0.7;}
+  100% { transform: scale(1); opacity: 1;}
+}
+.reserve-button {
+  background: var(--primary-color, #e61f26);
+  color: #fff;
+  border: none;
+  border-radius: 7px;
+  font-weight: 600;
+  padding: 9px 22px;
+  margin-right: 12px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+.reserve-button:hover { background: var(--secondary-color, #599fd4);}
+.cancel-button {
+  background: #eaeaea;
+  color: #222;
+  border: none;
+  border-radius: 7px;
+  font-weight: 500;
+  padding: 9px 22px;
+  cursor: pointer;
+}
+.cancel-button:hover { background: #d2d2d2;}
+.error-text { color: #e61f26; margin-top: 10px; font-weight: 500;}
+

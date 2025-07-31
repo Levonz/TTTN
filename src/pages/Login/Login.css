@@ -1,65 +1,80 @@
 .login-page {
+  min-height: 100vh;
+  background: var(--background-color, #f6f6f6);
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
-  height: 100vh;
-  background-color: var(--background-color);
-  font-family: var(--font-family);
-  padding-bottom: 100px;
+  align-items: center;
 }
 
 .login-title {
-  font-size: 2.5rem;
-  font-weight: 600;
-  color: var(--primary-color);
-  margin-bottom: 2rem;
+  margin-bottom: 24px;
+  color: var(--primary-color, #e61f26);
+  font-size: 2.2rem;
+  font-weight: bold;
+  letter-spacing: 1px;
 }
 
 .login-container {
+  background: var(--white-color, #fff);
+  padding: 40px 32px 32px 32px;
+  border-radius: 12px;
+  box-shadow: 0 6px 32px rgba(30, 30, 30, 0.12);
+  min-width: 340px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 2.5rem;
-  border-radius: 12px;
-  background-color: var(--white-color);
-  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+}
+
+.login-container form {
   width: 100%;
-  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
 }
 
 .login-input {
+  padding: 12px 14px;
+  border: 1.5px solid #ececec;
+  border-radius: 7px;
+  font-size: 1.04rem;
+  background: #f9f9f9;
   width: 100%;
-  padding: 1rem;
-  border-radius: 8px;
-  border: 1px solid var(--background-color);
-  font-size: 1rem;
-  transition:
-    border-color 0.2s ease-in-out,
-    box-shadow 0.2s ease-in-out;
+  transition: border 0.18s;
+  outline: none;
 }
 
 .login-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 2px 3px rgba(230, 31, 38, 0.1);
+  border-color: var(--primary-color, #e61f26);
+  background: #fff;
 }
 
 .login-button {
-  width: 100%;
-  padding: 1rem;
+  margin-top: 8px;
+  background: var(--primary-color, #e61f26);
+  color: #fff;
   border: none;
-  border-radius: 8px;
-  background-color: var(--primary-color);
-  color: var(--white-color);
-  font-size: 1.1rem;
-  font-weight: bold;
+  border-radius: 7px;
+  font-size: 1.12rem;
+  font-weight: 600;
+  padding: 12px 0;
+  width: 100%;
   cursor: pointer;
-  transition: background-color 0.2s ease-in-out;
+  letter-spacing: 0.2px;
+  box-shadow: 0 2px 8px rgba(30,30,30,0.04);
+  transition: background 0.18s;
 }
 
 .login-button:hover {
-  opacity: 0.7;
+  background: var(--secondary-color, #599fd4);
+}
+
+@media (max-width: 480px) {
+  .login-container {
+    min-width: 90vw;
+    padding: 28px 8vw;
+  }
+  .login-title {
+    font-size: 1.38rem;
+  }
 }

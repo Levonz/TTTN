@@ -60,7 +60,7 @@ const Admin = () => {
           <p>Xem lịch sử hóa đơn theo ngày, bàn</p>
         </Link>
 
-        <Link to="/admin/employees" className="admin-card">
+        <Link to="/admin/staff" className="admin-card">
           <h3>Quản lý nhân viên</h3>
           <p>Thêm tài khoản, gán quyền, reset mật khẩu</p>
         </Link>

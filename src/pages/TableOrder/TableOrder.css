@@ -24,28 +24,77 @@
   align-items: center;
 }
 
-.table-order-header-navbar {
-  flex: 1;
+.table-order-header-navbar-wrapper {
   display: flex;
   align-items: center;
   gap: 12px;
+  width: 100%;
+  min-width: 0;
 }
 
 .table-order-header-navbar-home-btn {
-  color: var(--primary-color);
   font-weight: bold;
+  color: var(--primary-color, #e61f26);
   text-decoration: none;
   padding: 8px 18px;
-  border-radius: 8px;
-  background: var(--white-color);    
-  border: 1.5px solid var(--primary-color); 
-  transition: background .2s, border .2s;
+  border-radius: 7px;
+  background: #fff;
+  box-shadow: 0 1px 8px rgba(120, 30, 30, 0.04);
+  border: 1.5px solid #ececec;
+  margin-right: 9px;
+  flex-shrink: 0;
+  transition: background 0.18s, color 0.18s;
+}
+.table-order-header-navbar-home-btn:hover {
+  background: var(--secondary-color, #599fd4);
+  color: #fff;
 }
 
-.table-order-header-navbar-home-btn:hover {
-  background: #f8f8f8;   
-  border-color: var(--secondary-color);
+.table-order-header-navbar-scroll {
+  display: flex;
+  align-items: center;
+  overflow-x: auto;
+  white-space: nowrap;
+  gap: 10px;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  padding-bottom: 2px;
+  flex: 1 1 0;
+  min-width: 0;
+  max-width: 100%;
 }
+.table-order-header-navbar-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.table-nav-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  background: #f5f5fa;
+  border-radius: 7px;
+  color: #333;
+  text-decoration: none;
+  font-weight: 600;
+  border: 1.5px solid #cfd6e8;
+  transition: background 0.18s, border 0.18s, color 0.16s;
+  white-space: nowrap;
+}
+
+.table-nav-btn--active, .table-nav-btn:hover {
+  background: var(--primary-color, #e61f26);
+  border-color: var(--primary-color, #e61f26);
+  color: #fff;
+}
+.table-order-current-table-label {
+  margin: 18px 0 12px 0;
+  font-size: 2.1rem;
+  font-weight: bold;
+  color: var(--primary-color, #e61f26);
+  letter-spacing: 1.2px;
+  text-align: center;
+  text-transform: uppercase;
+}
+
 
 .table-nav-btn {
   padding: 6px 16px;

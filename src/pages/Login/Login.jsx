@@ -8,7 +8,9 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = async () => {
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
     try {
       const response = await axios.post('http://localhost:8000/api/login', {
         username,
@@ -20,44 +22,53 @@ const Login = () => {
         const role = response.data.role;
 
         localStorage.setItem('token', token);
-        localStorage.setItem('role', role); // (tuỳ chọn) dùng cho các trang khác
+        localStorage.setItem('role', role);
 
         alert('Đăng nhập thành công');
 
         if (role === 'admin') {
           navigate('/admin');
-        } else {
+        } else if (role === 'staff') {
           navigate('/home');
+        } else {
+          navigate('/');
         }
       } else {
         alert('Đăng nhập thất bại');
       }
     } catch (error) {
-      console.error('Lỗi đăng nhập:', error);
-      alert('Không thể kết nối đến máy chủ.');
+      if (error.response && error.response.data && error.response.data.detail) {
+        alert('Lỗi: ' + error.response.data.detail);
+      } else {
+        alert('Không thể kết nối đến máy chủ.');
+      }
     }
   };
+
   return (
     <div className="login-page">
       <h1 className="login-title">Đăng nhập</h1>
       <div className="login-container">
-        <input
-          className="login-input"
-          type="text"
-          placeholder="Tên đăng nhập"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          className="login-input"
-          type="password"
-          placeholder="Mật khẩu"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button className="login-button" onClick={handleLogin}>
-          Đăng nhập
-        </button>
+        <form onSubmit={handleLogin}>
+          <input
+            className="login-input"
+            type="text"
+            placeholder="Tên đăng nhập"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            autoFocus
+          />
+          <input
+            className="login-input"
+            type="password"
+            placeholder="Mật khẩu"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button className="login-button" type="submit">
+            Đăng nhập
+          </button>
+        </form>
       </div>
     </div>
   );
