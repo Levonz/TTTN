@@ -1,9 +1,6 @@
 import './Cart.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faCircleUser,
-  faCartShopping,
-} from '@fortawesome/free-solid-svg-icons';
+import { faCartShopping } from '@fortawesome/free-solid-svg-icons';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { useTables } from '../../context/TableContext';
 import { useEffect, useState } from 'react';
@@ -20,15 +17,17 @@ const Cart = () => {
 
   const table = getTableById(tableId);
   const tableLabel = table ? table.label : tableId;
-
   const cartItems = getCartByTableId(tableId);
   const totalPrice = cartItems.reduce(
     (total, item) => total + item.price * item.quantity,
     0
   );
-
   const [activeTab, setActiveTab] = useState('cart');
   const [orders, setOrders] = useState([]);
+  const cartCount = cartItems.reduce(
+    (total, item) => total + (item.quantity || 1),
+    0
+  );
 
   // Lấy danh sách món đã gửi bếp (order)
   useEffect(() => {
@@ -111,9 +110,7 @@ const Cart = () => {
           </div>
           <div className="cart">
             <FontAwesomeIcon icon={faCartShopping} />
-          </div>
-          <div className="user-info">
-            <FontAwesomeIcon icon={faCircleUser} />
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </div>
         </div>
 

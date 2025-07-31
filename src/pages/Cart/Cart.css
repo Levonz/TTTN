@@ -41,11 +41,38 @@
   background: #f8f8f8;
 }
 
-.cart, .user-info {
-  margin-left: 12px;
-  font-size: 1.4rem;
+.cart{
+  padding: 6px 12px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
   color: var(--black-color);
-  cursor: pointer;
+  transition: background .2s;
+  position: relative;
+  font-size: 1.7rem; 
+  margin-left: 18px;
+  height: 38px; 
+}
+
+
+.cart-badge {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  min-width: 20px;
+  height: 20px;
+  background: var(--primary-color, #e61f26);
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.98rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  border: 2px solid #fff;
+  z-index: 2;
+  padding: 0 6px;
+  box-sizing: border-box;
 }
 
 .cart-header-second-line {

@@ -14,10 +14,21 @@ const categories = [
 
 const TableOrder = () => {
   const { tableId } = useParams();
-  const { tables, getTableById, addItemToCart, refreshTables } = useTables();
+  const {
+    tables,
+    getTableById,
+    addItemToCart,
+    refreshTables,
+    getCartByTableId,
+  } = useTables();
   const [activeCategory, setActiveCategory] = useState('Món chính');
   const [menus, setMenus] = useState([]);
   const navigate = useNavigate();
+  const cartItems = getCartByTableId(tableId) || [];
+  const cartCount = cartItems.reduce(
+    (total, item) => total + (item.quantity || 1),
+    0
+  );
 
   useEffect(() => {
     // Lấy menu mỗi 30s tự refresh
@@ -88,6 +99,7 @@ const TableOrder = () => {
           </div>
           <Link to={`/cart/${tableId}`} className="cart">
             <FontAwesomeIcon icon={faCartShopping} />
+            {cartCount > 0 && <span className="cart-badge">{cartCount}</span>}
           </Link>
         </div>
         <div className="table-order-header-third-line">

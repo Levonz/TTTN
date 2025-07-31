@@ -26,7 +26,7 @@ async def create_menu(menu: dict = Body(...)):
     new_menu = {
         "name": menu.get("name", ""),
         "category": menu.get("category", ""),
-        "price": menu.get("price", 0),
+        "price": int(menu.get("price", 0)),
         "image": menu.get("image", None),
     }
     result = await menu_collection.insert_one(new_menu)
@@ -38,7 +38,7 @@ async def update_menu(menu_id: str, menu: dict = Body(...)):
     updated_menu = {
         "name": menu.get("name", ""),
         "category": menu.get("category", ""),
-        "price": menu.get("price", 0),
+        "price": int(menu.get("price", 0)),
         "image": menu.get("image", None),
     }
     result = await menu_collection.update_one(

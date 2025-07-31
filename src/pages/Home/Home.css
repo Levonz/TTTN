@@ -22,6 +22,10 @@
   align-items: center;
 }
 
+.user-info{
+  font-size: 1.5rem;
+}
+
 .home-header-navbar-wrapper {
   display: flex;
   align-items: center;
